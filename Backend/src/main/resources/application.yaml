@@ -1,3 +1,16 @@
 spring:
   application:
     name: authSys
+  datasource:
+    url: jdbc:mysql://localhost:3306/authsysapp?createDatabaseIfNotExist = true
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
