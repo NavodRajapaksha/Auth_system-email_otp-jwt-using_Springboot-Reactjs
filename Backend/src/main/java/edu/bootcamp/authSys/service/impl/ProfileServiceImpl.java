@@ -6,7 +6,9 @@ import edu.bootcamp.authSys.entity.UserEntity;
 import edu.bootcamp.authSys.repositoy.UserRepositoy;
 import edu.bootcamp.authSys.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -16,11 +18,17 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepositoy userRepositoy;
 
+//    user register
+
     @Override
     public ProfileResponse createProfile(ProfileRequest profileRequest) {
         UserEntity newProfile = ConvertToUserEntity(profileRequest);
-        newProfile = userRepositoy.save(newProfile);
-        return ConvertToUserResponse(newProfile);
+        if(!userRepositoy.existsByEmail(profileRequest.getEmail())){
+            newProfile = userRepositoy.save(newProfile);
+            return ConvertToUserResponse(newProfile);
+        }
+
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "Email Already exist");
     }
 
     private ProfileResponse ConvertToUserResponse( UserEntity newProfile ) {
