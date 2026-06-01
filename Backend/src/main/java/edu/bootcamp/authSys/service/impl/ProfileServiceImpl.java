@@ -7,6 +7,7 @@ import edu.bootcamp.authSys.repositoy.UserRepositoy;
 import edu.bootcamp.authSys.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepositoy userRepositoy;
+    private final PasswordEncoder passwordEncoder;
 
 //    user register
 
@@ -45,7 +47,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .email(profileRequest.getEmail())
                 .userId(UUID.randomUUID().toString())
                 .name(profileRequest.getName())
-                .password(profileRequest.getPassword())
+                .password(passwordEncoder.encode(profileRequest.getPassword()))
                 .isAccountVerified(false)
                 .resetOtpExpireAt(0L)
                 .verifyOtp(null)

@@ -30,11 +30,17 @@ public class SecurityConfig {
    private final AppUserDetailsService appUserDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer :: disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password","/logout")
+                        .requestMatchers(
+                                "/api/v1/login",
+                                "/api/v1/register",
+                                "/api/v1/send-reset-otp",
+                                "/api/v1/reset-password",
+                                "/api/v1/logout"
+                        )
                         .permitAll().anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
