@@ -7,6 +7,7 @@ import edu.bootcamp.authSys.repositoy.UserRepositoy;
 import edu.bootcamp.authSys.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,6 +32,14 @@ public class ProfileServiceImpl implements ProfileService {
         }
 
         throw new ResponseStatusException(HttpStatus.CONFLICT, "Email Already exist");
+    }
+
+    @Override
+    public ProfileResponse getProfile(String email) {
+        UserEntity existingUser = userRepositoy.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+        return ConvertToUserResponse(existingUser);
+
     }
 
     private ProfileResponse ConvertToUserResponse( UserEntity newProfile ) {

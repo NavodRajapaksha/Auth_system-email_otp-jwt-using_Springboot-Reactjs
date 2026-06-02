@@ -6,4 +6,6 @@ import edu.bootcamp.authSys.dto.response.ProfileResponse;
 public interface ProfileService {
 
     ProfileResponse createProfile(ProfileRequest profileRequest);
+
+    ProfileResponse getProfile(String email);
 }
