@@ -1,6 +1,8 @@
 spring:
   application:
     name: authSys
+
+  # Database config
   datasource:
     url: jdbc:mysql://localhost:3306/authsysapp?createDatabaseIfNotExist = true
     username: root
@@ -14,6 +16,25 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  # Email server config
+  mail:
+    host: smtp-relay.brevo.com
+    port: 587
+    username: adcc0e001@smtp-brevo.com
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          from: navodrajapaksha82@gmail.com
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+
+# Jwt config
 jwt:
   secret:
     key: thisismyjwtsecretkey
+
+kind: Application
