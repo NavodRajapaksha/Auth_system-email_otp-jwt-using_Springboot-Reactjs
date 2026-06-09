@@ -110,7 +110,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         // update the user entity
         userEntity.setVerifyOtp(otp);
-        userEntity.setResetOtpExpireAt(expiryTime);
+        userEntity.setVerifyOtpExpireAt(expiryTime);
 
         userRepositoy.save(userEntity);
 
