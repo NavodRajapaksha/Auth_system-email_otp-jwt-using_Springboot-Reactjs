@@ -21,5 +21,26 @@ public class EmailService {
         message.setTo(toEmail);
         message.setSubject("Welcome to Our Platform");
         message.setText("Hello " + name + "\n\n Thanks for registering with us! \n\nRegards,\n Authify Team" );
+
+        mailSender.send(message);
+    }
+
+    public void sendResetOtpEmail (String toEmail, String otp){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(toEmail);
+        message.setSubject("Password Reset OTP");
+        message.setText("Your otp for resetting your password is " + otp + ". Use this OTP to procees with reset your password.");
+
+        mailSender.send(message);
+    }
+
+    public void sendOtpEmail(String toEmail, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(toEmail);
+        message.setSubject("Account Verification OTP");
+        message.setText("Your OTP is " + otp + ". Verify your account using this OTP. ");
+        mailSender.send(message);
     }
 }
