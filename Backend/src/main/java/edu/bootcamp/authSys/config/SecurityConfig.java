@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 "/api/v1/register",
                                 "/api/v1/send-reset-otp",
                                 "/api/v1/reset-password",
-                                "/api/v1/logout"
+                                "/api/v1/verify-otp"
                         )
                         .permitAll().anyRequest().authenticated())
                 .sessionManagement(
