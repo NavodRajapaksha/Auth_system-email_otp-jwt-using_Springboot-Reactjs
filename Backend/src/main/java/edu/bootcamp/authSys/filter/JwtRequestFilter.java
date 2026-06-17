@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // check the authorization header
         final String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
         }
 
