@@ -48,9 +48,9 @@ const ResetPassword = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response =await axios.post(backendURL + "/send-rest-otp?email="+email);
+            const response =await axios.post(backendURL + "/send-reset-otp?email="+email);
             if (response.status === 200) {
-                toast.error("Password rest OTP sent successfully!");
+                toast.success("Password reset OTP sent successfully!");
                 setIsEmailSent(true);
             } else {
                 toast.error("Something went wrong, please try again");
@@ -77,9 +77,9 @@ const ResetPassword = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response =await axios.post(backendURL + "/rest-password", {email, otp, newPassword});
+            const response =await axios.post(backendURL + "/reset-password", {email, otp, newPassword});
             if (response.status === 200) {
-                toast.success("Password rest OTP sent successfully!");
+                toast.success("Password reset successfully!");
                 navigate("/login")
             } else {
                 toast.error("Something went wrong, please try again");
@@ -131,7 +131,7 @@ const ResetPassword = () => {
                 )}
 
             {/*    otp card*/}
-                {!isOtpSubmitted && isEmailSent (
+                {!isOtpSubmitted && isEmailSent && (
                     <div className="p-5 rounded-4 shadow bg-white" style={{width: "400px"}}>
                         <h4 className="text-center fw-bold mb-2">Email Verify OTP</h4>
                         <p className="text-center text-black-50 mb-4">
