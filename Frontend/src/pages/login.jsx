@@ -11,34 +11,35 @@ const login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const {backendUrl, setIsLoggedIn, getUserData} = useContext(AppContext);
+    const {backendURL, setIsLoggedIn, getUserData} = useContext(AppContext);
     const navigate = useNavigate();
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         axios.defaults.withCredentials = true;
-        setIsCreateAccount(true);
+        setLoading(true);
         try {
             if (isCreateAccount) {
                 //register Api
-                const response = await axios.post(`${backendUrl}/register`, {name, email, password})
+                const response = await axios.post(`${backendURL}/register`, {name, email, password})
                 if (response.status === 201) {
-                    navigate("/");
-                    toast.success("Acconut created successfully.");
+                    navigate("/login");
+                    toast.success("Account created! Please log in to continue.");
                 } else {
                     toast.error("Email already exists");
                 }
             } else {
-                const response = await toast.error(`${backendUrl}/login`, {email, password});
+                const response = await axios.post(`${backendURL}/login`, {email, password});
                 if (response.status === 200) {
                     setIsLoggedIn(true);
+                    await getUserData();
                     navigate("/");
                 } else {
-                    toast.error("Email / passowrd incorrect")
+                    toast.error("Email / password incorrect");
                 }
             }
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || error.message);
         } finally {
             setLoading(false);
         }
@@ -69,7 +70,7 @@ const login = () => {
                     {
                         isCreateAccount && (
                             <div className="mb-3">
-                                <label htmlFor="fullname" className="form-label">Email full Name</label>
+                                <label htmlFor="fullname" className="form-label">Full Name</label>
                                 <input type="text"
                                        id="fullname"
                                        className="form-control"
@@ -94,7 +95,7 @@ const login = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="Password" className="form-label">Password</label>
-                        <input type="text"
+                        <input type="password"
                                id="Password"
                                className="form-control"
                                placeholder="Enter Password"
