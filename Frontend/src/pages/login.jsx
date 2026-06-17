@@ -23,7 +23,7 @@ const login = () => {
                 //register Api
                 const response = await axios.post(`${backendURL}/register`, {name, email, password})
                 if (response.status === 201) {
-                    navigate("/login");
+                    setIsCreateAccount(false);
                     toast.success("Account created! Please log in to continue.");
                 } else {
                     toast.error("Email already exists");
