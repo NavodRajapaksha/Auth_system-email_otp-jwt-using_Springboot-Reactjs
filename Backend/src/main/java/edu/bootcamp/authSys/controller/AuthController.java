@@ -102,10 +102,11 @@ public class AuthController {
     public void sendVerifyOtp(@CurrentSecurityContext(expression = "authentication?.name") String email) {
         try {
             profileService.sendOtp(email);
+        } catch (ResponseStatusException e) {
+            throw e;  // preserve the original status code (e.g. 409 CONFLICT)
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
     }
 
     @PostMapping("/verify-otp")

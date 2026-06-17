@@ -93,6 +93,8 @@ public class ProfileServiceImpl implements ProfileService {
         userRepositoy.save(userEntity);
     }
 
+    private static final long OTP_COOLDOWN_MS = 2 * 60 * 1000L; // 2 minutes
+
     @Override
     public void sendOtp(String email) {
         UserEntity userEntity = userRepositoy.findByEmail(email)
@@ -102,15 +104,29 @@ public class ProfileServiceImpl implements ProfileService {
             return;
         }
 
-        // generate 6 digit otp
+        // Enforce 2-minute cooldown between consecutive OTP requests
+        long now = System.currentTimeMillis();
+        Long lastSentAt = userEntity.getOtpSentAt();
+        if (lastSentAt != null && lastSentAt > 0) {
+            long elapsed = now - lastSentAt;
+            if (elapsed < OTP_COOLDOWN_MS) {
+                long remainingSeconds = (OTP_COOLDOWN_MS - elapsed) / 1000;
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "COOLDOWN:" + remainingSeconds);
+            }
+        }
+
+        // Generate fresh 6-digit OTP
         String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
 
-        // calculate ecpiry time (current time + 15 min in milisecond)
-        long expiryTime = System.currentTimeMillis() + (15 * 60 * 1000);
+        // Calculate expiry time (current time + 15 min in milliseconds)
+        long expiryTime = now + (15 * 60 * 1000);
 
-        // update the user entity
+        // Update the user entity
         userEntity.setVerifyOtp(otp);
         userEntity.setVerifyOtpExpireAt(expiryTime);
+        userEntity.setOtpSentAt(now);
 
         userRepositoy.save(userEntity);
 
@@ -160,6 +176,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .resetOtpExpireAt(0L)
                 .verifyOtp(null)
                 .verifyOtpExpireAt(0L)
+                .otpSentAt(0L)
                 .resetOtp(null)
                 .build();
     }
