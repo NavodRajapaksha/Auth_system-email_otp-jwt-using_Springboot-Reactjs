@@ -12,7 +12,7 @@ const Header = () => {
             <h5 className="fw-semibold">
                 Hey {userData ? userData.name : "Developer"} <span role="img" aria-label="wave">👋</span>
             </h5>
-            <h1 className="fw-bold display-5 mb-3">Welcometo our product</h1>
+            <h1 className="fw-bold display-5 mb-3">Welcome to our product</h1>
 
             <p className="text-muted fs-5 mb-4" style={{maxWidth:"500px"}}>
                 Let's start with a quick product tour and you can setup the authentication in no time!
